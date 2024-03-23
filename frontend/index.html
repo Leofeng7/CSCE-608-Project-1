@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Query Interface</title>
+</head>
+<body>
+
+<h2>Query User Information</h2>
+
+<label for="userId">User ID:</label>
+<input type="text" id="userId" name="userId">
+<button onclick="queryUser()">Query User</button>
+
+<div id="userInfo" style="margin-top: 20px;"></div>
+
+<script>
+function queryUser() {
+    var userId = document.getElementById('userId').value;
+    fetch(`/get-user?userId=${userId}`)
+        .then(response => response.json())
+        .then(data => {
+            if(data.error) {
+                document.getElementById('userInfo').textContent = 'Error: ' + data.error;
+            } else {
+                document.getElementById('userInfo').textContent = `Username: ${data.username}, Email: ${data.email}, Aboutme: ${data.aboutme}, Followers: ${data.followers}`;
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            document.getElementById('userInfo').textContent = 'An error occurred';
+        });
+}
+</script>
+
+</body>
+</html>
